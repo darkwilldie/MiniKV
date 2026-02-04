@@ -49,6 +49,29 @@ make all
 *   `libminikv.a`：静态库。
 *   `minikv`：CLI 可执行文件。
 
+## 命令行交互模式
+
+直接运行 `minikv` 可进入交互环境。
+命令格式为 `<cmd> [args] [-f <file>]`。
+如果不指定 `-f`，操作将在内存中进行（可使用 `load/save` 持久化）。
+
+```bash
+./bin/minikv
+minikv> help
+# 显示操作指导
+minikv> load test.kv
+# 加载 test.kv 到内存
+minikv> get hello
+world
+minikv> set k1 v1
+# 设置内存中的 k1=v1
+minikv> save dump.kv
+# 保存内存数据到 dump.kv
+minikv> set key_in_file value_in_file -f other.kv
+# 直接操作 other.kv 文件（自动保存）
+minikv> quit
+```
+
 清理构建产物：
 ```bash
 make clean
