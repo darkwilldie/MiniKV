@@ -179,7 +179,3 @@ name = My Database
 ; Backup settings
 backup_enabled = true
 ```
-
-## 许可
-
-本项目开源，仅用于学习和教学用途。
