@@ -47,7 +47,23 @@ make all
 
 生成产物：
 *   `libminikv.a`：静态库。
-*   `minikv`：CLI 可执行文件。
+*   `bin/minikv`：CLI 可执行文件。
+
+## 安装
+
+将 `minikv` 安装为系统命令（安装到 `/usr/local/bin/`）：
+
+```bash
+make install
+```
+
+安装后可以在任何位置直接使用 `minikv` 命令。
+
+卸载系统命令：
+
+```bash
+make uninstall
+```
 
 ## 命令行交互模式
 
@@ -56,7 +72,7 @@ make all
 如果不指定 `-f`，操作将在内存中进行（可使用 `load/save` 持久化）。
 
 ```bash
-./bin/minikv
+minikv
 minikv> help
 # 显示操作指导
 minikv> load test.kv
@@ -85,26 +101,26 @@ make clean
 
 **用法：**
 ```bash
-./minikv <filename> <command> [args...]
+minikv <filename> <command> [args...]
 ```
 
 **示例：**
 
 *   **设置键值**（文件不存在会创建，key 存在会覆盖）：
     ```bash
-    ./minikv config.txt set server_host "127.0.0.1"
-    ./minikv config.txt set port 8080
+    minikv config.txt set server_host "127.0.0.1"
+    minikv config.txt set port 8080
     ```
 
 *   **获取键值**：
     ```bash
-    ./minikv config.txt get server_host
+    minikv config.txt get server_host
     # 输出: 127.0.0.1
     ```
 
 *   **列出所有键值**（按 key 排序）：
     ```bash
-    ./minikv config.txt list
+    minikv config.txt list
     # 输出:
     # port=8080
     # server_host=127.0.0.1
@@ -112,7 +128,7 @@ make clean
 
 *   **删除键**：
     ```bash
-    ./minikv config.txt del port
+    minikv config.txt del port
     ```
 
 ### 2. 使用 C 库（`libminikv.a`）
