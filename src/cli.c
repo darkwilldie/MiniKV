@@ -381,7 +381,7 @@ void interactive_mode() {
         fprintf(stderr, "Error: Failed to initialize memory kv\n");
         return;
     }
-
+    printf("MiniKV Interactive Mode. Type 'h' or 'help' for commands, 'q' or 'quit' to exit.\n");
     // 循环读取命令
     while (1) {
         printf("minikv> ");
