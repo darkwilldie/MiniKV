@@ -1,5 +1,6 @@
 #define _POSIX_C_SOURCE 200809L
 #include "minikv.h"
+#include "parser.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -22,39 +23,9 @@ struct mk_t {
     size_t count;
 };
 
-// static关键字使该函数只能在本文件内调用
-// 去掉字符串两边的空白
-static char* trim(char* str) {
-    if (!str) return NULL;
 
-    // 跳到第一个非空白字符
-    while (isspace((unsigned char)*str)) str++;
-    // 如果检测到末尾0，返回当前空白字符串
-    if (*str == 0) return str;
 
-    // end定位到字符串尾部，末尾0之前
-    char* end = str + strlen(str) - 1;
-    // 找到尾部第一个空白字符
-    while (end > str && isspace((unsigned char)*end)) end--;
-    // 将end下一个位置设为新的末尾0
-    *(end + 1) = '\0';
 
-    return str;
-}
-
-// 验证字符是否在[A-Za-z0-9_.-]范围内
-static int is_valid_key(const char* key) {
-    // 当前字符串为NULL或空字符串直接返回0
-    if (!key || *key == '\0') return 0;
-    while (*key) {
-        // 检测到不属于字母/数字、下划线、点、分隔符的返回0
-        if (!isalnum((unsigned char)*key) && *key != '_' && *key != '.' && *key != '-') {
-            return 0;
-        }
-        key++;
-    }
-    return 1;
-}
 
 // 获取键值对数量
 size_t mk_count(const mk_t* kv) {
@@ -265,25 +236,13 @@ int mk_load(mk_t* kv, const char* filepath) {
     // 逐行读取文件到buffer
     char buffer[1024];
     while (fgets(buffer, sizeof(buffer), fp)) {
-        // 去掉行首尾空白
-        char* line = trim(buffer);
+        char* key = NULL;
+        char* val = NULL;
         
-        // 跳过空行或注释行
-        if (strlen(line) == 0 || line[0] == '#' || line[0] == ';') {
-            continue;
-        }
-
-        char* eq = strchr(line, '=');
-        if (eq) {
-            // 把"="改为"\0"分割key和value
-            *eq = '\0'; 
-            // 各自去掉空白
-            char* key = trim(line);
-            char* val = trim(eq + 1);
+        // 使用新的解析函数
+        if (parse_key_value_line(buffer, &key, &val)) {
             // 设置键值对
-            if (key && val) {
-                mk_set(kv, key, val);
-            }
+            mk_set(kv, key, val);
         }
     }
     // 关闭文件

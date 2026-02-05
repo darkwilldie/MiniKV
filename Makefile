@@ -15,11 +15,11 @@ LIBVAL = libminikv.a
 TARGET = $(BINDIR)/minikv
 TEST_TARGET = $(BINDIR)/test_runner
 
-SRC = $(SRCDIR)/minikv.c
+SRC = $(SRCDIR)/minikv.c $(SRCDIR)/parser.c
 CLI_SRC = $(SRCDIR)/cli.c
 TEST_SRC = $(TESTDIR)/test_minikv.c
 
-OBJ = $(OBJDIR)/minikv.o
+OBJ = $(OBJDIR)/minikv.o $(OBJDIR)/parser.o
 CLI_OBJ = $(OBJDIR)/cli.o
 TEST_OBJ = $(OBJDIR)/test_minikv.o
 
