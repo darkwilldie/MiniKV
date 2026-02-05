@@ -24,7 +24,7 @@ CLI_OBJ = $(OBJDIR)/cli.o
 TEST_OBJ = $(OBJDIR)/test_minikv.o
 
 # 声明伪目标
-.PHONY: all clean test directories
+.PHONY: all clean test directories install uninstall
 
 # all目标创建目录，生成.a库和可执行文件
 # make默认执行第一个目标
@@ -58,6 +58,15 @@ $(TEST_TARGET): $(TEST_OBJ) $(LIBVAL)
 # 运行测试
 test: directories $(TEST_TARGET)
 	./$(TEST_TARGET)
+
+# 安装到系统
+install: all
+	sudo cp $(TARGET) /usr/local/bin/minikv
+	sudo chmod +x /usr/local/bin/minikv
+
+# 从系统卸载
+uninstall:
+	sudo rm -f /usr/local/bin/minikv
 
 clean:
 	rm -rf $(LIBVAL) $(TARGET) $(TEST_TARGET) $(OBJDIR) $(BINDIR)
